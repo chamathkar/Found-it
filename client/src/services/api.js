@@ -1,8 +1,14 @@
 import axios from 'axios';
 
+// Use VITE_API_URL if defined (production), otherwise fallback to '/api' (local dev with proxy)
+const rawBaseUrl = import.meta.env.VITE_API_URL;
+const baseURL = rawBaseUrl
+  ? `${rawBaseUrl.replace(/\/$/, '')}/api`
+  : '/api';
+
 const api = axios.create({
-  baseURL: '/api',
-  timeout: 8000,
+  baseURL,
+  timeout: 50000, // 50s to allow for Render free-tier cold starts
   headers: {
     'Content-Type': 'application/json',
   },
