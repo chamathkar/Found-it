@@ -47,7 +47,7 @@ const itemSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['open', 'claimed'],
+      enum: ['open', 'pending_claim', 'claimed', 'closed'],
       default: 'open',
     },
     imageUrl: {
@@ -77,6 +77,50 @@ const itemSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      required: [true, 'User ID is required'],
+    },
+    handoverOtp: {
+      type: String,
+      default: null,
+    },
+    handoverStatus: {
+      type: String,
+      enum: ['pending', 'verified', 'expired', 'locked', 'admin_override', null],
+      default: null,
+    },
+    handoverOtpVerifiedAt: {
+      type: Date,
+      default: null,
+    },
+    handoverCompletedAt: {
+      type: Date,
+      default: null,
+    },
+    handoverVerifiedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    closureMethod: {
+      type: String,
+      enum: ['otp_verified', 'admin_override', null],
+      default: null,
+    },
+    closedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    closedAt: {
+      type: Date,
+      default: null,
+    },
+    otpAttempts: {
+      type: Number,
+      default: 0,
+    },
+    otpExpiresAt: {
+      type: Date,
       default: null,
     },
   },

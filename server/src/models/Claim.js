@@ -38,6 +38,49 @@ const claimSchema = new mongoose.Schema(
       enum: ['pending', 'approved', 'rejected'],
       default: 'pending',
     },
+    reviewedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    reviewedAt: {
+      type: Date,
+      default: null,
+    },
+    handoverOtp: {
+      type: String,
+      default: null,
+    },
+    handoverOtpCreatedAt: {
+      type: Date,
+      default: null,
+    },
+    handoverStatus: {
+      type: String,
+      enum: ['pending', 'verified', 'expired', 'locked', 'admin_override', null],
+      default: null,
+    },
+    handoverOtpVerifiedAt: {
+      type: Date,
+      default: null,
+    },
+    handoverCompletedAt: {
+      type: Date,
+      default: null,
+    },
+    handoverVerifiedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    otpAttempts: {
+      type: Number,
+      default: 0,
+    },
+    otpExpiresAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,

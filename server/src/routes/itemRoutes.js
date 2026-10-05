@@ -4,13 +4,19 @@ const {
   getItems,
   getStats,
   getItemById,
+  getMyItems,
   createItem,
   updateItemStatus,
+  closeItem,
+  deleteItem,
+  getPotentialMatches,
   createClaim,
   reviewClaim,
+  verifyHandoverOtp,
+  regenerateHandoverOtp,
 } = require('../controllers/itemController');
 
-const { protect } = require('../middlewares/authMiddleware');
+const { protect, optionalAuth } = require('../middlewares/authMiddleware');
 const {
   validateCreateItem,
   validateUpdateItemStatus,
@@ -21,16 +27,40 @@ const {
 // Stats endpoint
 router.get('/stats', getStats);
 
+// My reports (must come before /:id)
+router.get('/my', protect, getMyItems);
+
 // Items CRUD
 router.route('/')
   .get(getItems)
   .post(protect, validateCreateItem, createItem);
 
 router.route('/:id')
-  .get(getItemById);
+  .get(optionalAuth, getItemById)
+  .delete(protect, deleteItem);
 
 router.route('/:id/status')
   .patch(protect, validateUpdateItemStatus, updateItemStatus);
+
+router.route('/:id/close')
+  .patch(protect, closeItem);
+
+// Handover verification endpoints (supports POST /handover/verify as per spec & PATCH /verify-otp)
+router.route('/:id/handover/verify')
+  .post(protect, verifyHandoverOtp);
+
+router.route('/:id/verify-otp')
+  .patch(protect, verifyHandoverOtp)
+  .post(protect, verifyHandoverOtp);
+
+router.route('/:id/handover/regenerate')
+  .post(protect, regenerateHandoverOtp);
+
+router.route('/:id/regenerate-otp')
+  .post(protect, regenerateHandoverOtp);
+
+router.route('/:id/matches')
+  .get(getPotentialMatches);
 
 router.route('/:id/claims')
   .post(protect, validateCreateClaim, createClaim);

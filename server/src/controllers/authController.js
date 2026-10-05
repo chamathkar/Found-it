@@ -40,10 +40,11 @@ const register = async (req, res, next) => {
       password,
       phone: phone ? phone.trim() : '',
       studentId: studentId ? studentId.trim() : '',
+      role: 'user', // Security: public registration must never allow role 'admin'
     });
 
-    // Generate JWT
-    const token = signToken({ id: user._id, email: user.email });
+    // Generate JWT including role
+    const token = signToken({ id: user._id, email: user.email, role: user.role });
 
     return res.status(201).json({
       success: true,
@@ -78,8 +79,8 @@ const login = async (req, res, next) => {
       throw ApiError.unauthorized('Invalid email or password.');
     }
 
-    // Generate JWT
-    const token = signToken({ id: user._id, email: user.email });
+    // Generate JWT including role
+    const token = signToken({ id: user._id, email: user.email, role: user.role });
 
     return res.status(200).json({
       success: true,

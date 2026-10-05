@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X, Lock, Mail, User as UserIcon, Phone, Hash, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function AuthModal({ isOpen, onClose, initialTab = 'login', onSuccess }) {
   const [tab, setTab] = useState(initialTab); // 'login' | 'register'
   const { login, register } = useAuth();
+  const navigate = useNavigate();
 
   // Login form state
   const [loginData, setLoginData] = useState({
@@ -32,9 +34,12 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login', onSuc
     setLoading(true);
 
     try {
-      await login(loginData.email, loginData.password);
+      const res = await login(loginData.email, loginData.password);
       onSuccess?.('Signed in successfully!');
       onClose();
+      if (res?.user?.role === 'admin') {
+        navigate('/admin');
+      }
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Login failed. Please check credentials.');
     } finally {

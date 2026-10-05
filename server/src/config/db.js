@@ -15,8 +15,9 @@ const connectDB = async () => {
   const uri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/campusrecover';
 
   try {
+    console.log(`[Database] Connecting to MongoDB...`);
     const conn = await mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 30000,
     });
     console.log(`[Database] MongoDB Connected: ${conn.connection.host}`);
     return conn;

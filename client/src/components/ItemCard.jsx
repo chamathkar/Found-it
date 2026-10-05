@@ -69,7 +69,7 @@ export default function ItemCard({ item, onClick }) {
           )}
 
           {/* Type Badge */}
-          <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+          <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 flex-wrap">
             {isFound ? (
               <span className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-emerald-600 text-white shadow-sm">
                 Found
@@ -80,9 +80,21 @@ export default function ItemCard({ item, onClick }) {
               </span>
             )}
 
-            {isClaimed && (
+            {item.status === 'pending_claim' && (
               <span className="px-2 py-0.5 rounded-md text-xs font-medium bg-amber-500 text-white shadow-sm">
-                Claim Pending
+                Claim in Review
+              </span>
+            )}
+
+            {item.status === 'claimed' && (
+              <span className="px-2 py-0.5 rounded-md text-xs font-medium bg-blue-600 text-white shadow-sm">
+                Claimed
+              </span>
+            )}
+
+            {item.status === 'closed' && (
+              <span className="px-2 py-0.5 rounded-md text-xs font-medium bg-gray-900 text-white shadow-sm">
+                Closed
               </span>
             )}
           </div>
