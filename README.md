@@ -76,11 +76,9 @@ graph TD
     Client["React 19 + Vite Frontend (Port 5173)"]
     API["Express 4 REST API (Port 5000)"]
     DB[(MongoDB Database)]
-    Cloud["Cloudinary Media Storage"]
 
     Client -->|Axios HTTP Requests / Bearer JWT| API
     API -->|Mongoose ODM| DB
-    API -->|Image Uploads / Delivery| Cloud
     Client -.->|Vite Dev Reverse Proxy /api| API
 ```
 
@@ -123,7 +121,7 @@ stateDiagram-v2
 - **Database & ODM**: [MongoDB](https://www.mongodb.com/) via [Mongoose 8](https://mongoosejs.com/)
 - **Security & Headers**: [Helmet](https://helmetjs.github.io/), [CORS](https://github.com/expressjs/cors), and [Express Rate Limit](https://github.com/express-rate-limit/express-rate-limit)
 - **Authentication**: [JSON Web Tokens (jsonwebtoken)](https://jwt.io/) & [bcryptjs](https://github.com/dcodeIO/bcrypt.js)
-- **Media Upload**: [Multer](https://github.com/expressjs/multer) & [Cloudinary SDK](https://cloudinary.com/)
+- **File Uploads**: [Multer](https://github.com/expressjs/multer) for multipart image handling
 - **Testing**: Native Fetch Test Suite & [MongoDB Memory Server](https://github.com/nodkz/mongodb-memory-server)
 
 ---
@@ -165,7 +163,6 @@ Found It/
 └── server/                        # Express backend API
     ├── src/
     │   ├── config/
-    │   │   ├── cloudinary.js      # Cloudinary media configuration
     │   │   └── db.js              # MongoDB Mongoose connection
     │   ├── controllers/
     │   │   ├── adminController.js # Admin statistics, users, items & claims
@@ -251,11 +248,6 @@ JWT_SECRET=campusrecover_super_secret_jwt_key_2026
 JWT_EXPIRES_IN=7d
 CLIENT_URL=http://localhost:5173
 NODE_ENV=development
-
-# Optional: Cloudinary credentials for cloud image uploads
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
 ```
 
 #### 2. Frontend Configuration (`client/.env`)
@@ -420,7 +412,6 @@ The client includes a ready-to-use [`vercel.json`](file:///c:/Users/chama/OneDri
    - `MONGODB_URI`: `<Your MongoDB Atlas URI>`
    - `JWT_SECRET`: `<High entropy secret>`
    - `CLIENT_URL`: `https://your-vercel-domain.vercel.app`
-   - `CLOUDINARY_*`: `<Your Cloudinary credentials>`
 
 ---
 
